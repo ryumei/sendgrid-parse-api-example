@@ -1,19 +1,26 @@
+/*eslint-env node */
+/*globals sendgrid server*/
 var inbound = {
   handler: function (request) {
     var envelope;
-    var to;
     var payload   = request.payload;
+    var mail_from = "bluemix@example.com";
+    
+    var rcpt_to = process.env.RCPT_TO;
+	var subject_prefix = process.env.SUBJECT;
 
     console.log(payload);
 
-    if (payload.envelope) { envelope = JSON.parse(payload.envelope) };
-    if (envelope)         { to = envelope.from; }
+    if (payload.envelope) { envelope = JSON.parse(payload.envelope); }
+    if (envelope)         {
+    	mail_from = envelope.from;
+    }
 
     var Email     = sendgrid.Email;
     var email     = new Email({
-      to:       to,
-      from:     "hi@sendgrid-parse-api-example.com",
-      subject:  "[sendgrid-parse-api-example] Inbound Payload",
+      to:       rcpt_to,
+      from:     mail_from,
+      subject:  subject_prefix,
       text:     "A payload was just delivered via SendGrid's Inbound Parse API. It should be attached."
     });
 

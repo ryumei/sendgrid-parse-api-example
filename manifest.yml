@@ -1,0 +1,7 @@
+---
+applications:
+- memory: 512M
+  path: .
+  host: ryumei--sendgrid-parse
+  name: ryumei | sendgrid-parse
+  instances: 1
